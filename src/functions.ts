@@ -1,13 +1,14 @@
-// functions.ts
-import { readFile, writeFile } from "fs";
+import { readFile, writeFile, existsSync } from "fs";
 import { promisify } from "util";
 import { Person, ParsedContent } from "./interfaces";
-import {person} from './main'
 
 const readFileAsync = promisify(readFile);
 const writeFileAsync = promisify(writeFile);
 
-export const handleSimilarity = (parsedContent: ParsedContent) => {
+export const handleSimilarity = (
+  parsedContent: ParsedContent,
+  person: Person
+) => {
   const numberSimilarity = Object.values(parsedContent).filter(
     (numberValue) => numberValue.Number === person.Number
   );
@@ -15,11 +16,15 @@ export const handleSimilarity = (parsedContent: ParsedContent) => {
 };
 
 export const handleFile = async (person: Person) => {
+  const filePath = "./phonebook.json";
+  if (!existsSync(filePath)) {
+    await writeFileAsync(filePath, "");
+  }
   try {
-    const content = await readFileAsync("phonebook.json", "utf-8");
+    const content = await readFileAsync(filePath, "utf-8");
     if (content) {
       const parsedContent: ParsedContent = JSON.parse(content);
-      const { numberSimilarity } = handleSimilarity(parsedContent);
+      const { numberSimilarity } = handleSimilarity(parsedContent, person);
 
       if (numberSimilarity.length > 0) {
         console.log(
@@ -31,11 +36,13 @@ export const handleFile = async (person: Person) => {
           ...parsedContent,
           [Object.keys(parsedContent).length]: person,
         });
-        await writeFileAsync("phonebook.json", newObject);
+        await writeFileAsync(filePath, newObject);
+        console.log("contact has been created");
       }
     } else {
       const newObject = JSON.stringify({ 0: person });
-      await writeFileAsync("phonebook.json", newObject);
+      await writeFileAsync(filePath, newObject);
+      console.log("contact has been created");
     }
   } catch (error) {
     console.log(error);
