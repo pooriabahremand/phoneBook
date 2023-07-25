@@ -15,14 +15,32 @@ export class App {
   }
 
   public async run() {
-    this.rl.question("what is your full name ? ", async (fullName) => {
-      this.person.fullName = fullName;
-      this.rl.question("what is your phone number ? ", async (number) => {
+    this.getFullName();
+  }
+
+  private getFullName() {
+    this.rl.question("What is your full name? ", (fullName) => {
+      if (!fullName.trim()) {
+        console.log("Invalid input. Please try again.");
+        this.getFullName();
+      } else {
+        this.person.fullName = fullName;
+        this.getPhoneNumber();
+      }
+    });
+  }
+
+  private getPhoneNumber() {
+    this.rl.question("What is your phone number? ", async (number) => {
+      if (!number.trim()) {
+        console.log("Invalid input. Please try again.");
+        this.getPhoneNumber();
+      } else {
         this.person.Number = number;
         await handleFile(this.person);
         this.rl.close();
         this.restart();
-      });
+      }
     });
   }
 
