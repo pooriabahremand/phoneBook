@@ -1,45 +1,46 @@
 import { readFileSync, writeFileSync, existsSync } from "fs";
+import { Person } from "./interfaces";
 
-import { Person, ParsedContent } from "./interfaces";
+const filePath: string = "./phonebook.json";
+let phoneBook: Person[] = [];
 
-export const handleSimilarity = (
-  parsedContent: ParsedContent,
-  person: Person
-) => {
-  const numberSimilarity = Object.values(parsedContent).filter(
-    (numberValue) => numberValue.Number === person.Number
-  );
+if (existsSync(filePath)) {
+  const content = readFileSync(filePath, "utf-8");
+  if (content) {
+    phoneBook = JSON.parse(content);
+    phoneBook.map((contact) => {
+      console.log(contact);
+    });
+  }
+}
+
+export const handleSimilarity = (person: Person) => {
+  phoneBook.map((contact) => {
+    console.log(contact);
+  });
+  const numberSimilarity = phoneBook.filter((numberValue) => {
+    return person.Number === numberValue.Number;
+  });
+
   return { numberSimilarity };
 };
 
 export const handleFile = (person: Person) => {
-  const filePath = "./phonebook.json";
-  if (!existsSync(filePath)) {
-    writeFileSync(filePath, "");
-  }
   try {
-    const content = readFileSync(filePath, "utf-8");
-    if (content) {
-      const parsedContent: ParsedContent = JSON.parse(content);
-      const { numberSimilarity } = handleSimilarity(parsedContent, person);
+    const { numberSimilarity } = handleSimilarity(person);
 
-      if (numberSimilarity.length > 0) {
-        console.log(
-          `you saved this phone number before !! this is the contact with the similarity `
-        );
-        console.log(numberSimilarity);
-      } else {
-        const newObject = JSON.stringify({
-          ...parsedContent,
-          [Object.keys(parsedContent).length]: person,
-        });
-        writeFileSync(filePath, newObject);
-        console.log("contact has been created");
-      }
+    if (numberSimilarity.length > 0) {
+      console.log(
+        `you saved this phone number before !! this is the contact with the similarity `
+      );
+      console.log(numberSimilarity);
     } else {
-      const newObject = JSON.stringify({ 0: person });
-      writeFileSync(filePath, newObject);
+      phoneBook = [...phoneBook, person];
+      writeFileSync(filePath, JSON.stringify(phoneBook));
       console.log("contact has been created");
+      phoneBook.map((contact) => {
+        console.log(contact);
+      });
     }
   } catch (error) {
     console.log(error);

@@ -3,5 +3,5 @@
   "ext": ".ts,.js",
   "ignore": [],
   "exec": "npx ts-node ./src/main.ts",
-  "start:dev": "npx nodemon"
+  "start": "npx nodemon"
 }

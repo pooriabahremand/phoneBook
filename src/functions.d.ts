@@ -1,8 +1,7 @@
-import { Person, ParsedContent } from "./interfaces";
+import { Person } from "./interfaces";
 
 export declare const handleFile: (person: Person) => Promise<void>;
 
-export declare const handleSimilarity: (
-  parsedContent: ParsedContent,
-  person: Person
-) => { numberSimilarity: Person[] };
+export declare const handleSimilarity: (person: Person) => {
+  numberSimilarity: Person[];
+};

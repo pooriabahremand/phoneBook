@@ -30,7 +30,7 @@ export class App {
     });
   }
 
-  private getPhoneNumber() {
+  private async getPhoneNumber() {
     this.rl.question("What is your phone number? ", async (number) => {
       if (!number.trim()) {
         console.log("Invalid input. Please try again.");

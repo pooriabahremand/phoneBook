@@ -3,6 +3,4 @@ export interface Person {
   Number: string;
 }
 
-export interface ParsedContent {
-  [key: string]: Person;
-}
+
