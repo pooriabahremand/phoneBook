@@ -48,8 +48,11 @@ export class PhoneBook {
     const tempFilteredPpl = this.ppl.filter((contact: Person) => {
       return contact.Number === argPerson.Number;
     });
+    const invalidInput = Object.values(argPerson).filter((item) => {
+      return item.trim() == false;
+    });
     // If there are any contacts with the same number, return false; otherwise, return true
-    if (tempFilteredPpl.length > 0) {
+    if (tempFilteredPpl.length > 0 || invalidInput) {
       return false;
     } else {
       return true;
