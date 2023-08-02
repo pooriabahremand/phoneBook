@@ -28,34 +28,39 @@ export class PhoneBook {
   }
 
   // Define the add method, which takes a Person object as an argument and returns a boolean
-  public add(argPerson: Person): boolean {
+  public add(argPerson: Person): number {
     // Check if the person is valid using the validatePerson method
-    if (this.validatePerson(argPerson)) {
+    if (this.validatePerson(argPerson) === 2) {
       // If they are valid, add them to the ppl array and write it to the file
       this.ppl.push(argPerson);
       writeFileSync(this.filePath, JSON.stringify(this.ppl));
       // Return true to indicate that the person was added successfully
-      return true;
+      return 2;
     } else {
       // If they are not valid, return false to indicate that they were not added
-      return false;
+      return this.validatePerson(argPerson);
     }
   }
 
   // Define a private method for validating a person
-  private validatePerson(argPerson: Person): boolean {
+  private validatePerson(argPerson: Person): number {
     // Filter the ppl array to find any contacts with the same number as argPerson
     const tempFilteredPpl = this.ppl.filter((contact: Person) => {
       return contact.Number === argPerson.Number;
     });
     const invalidInput = Object.values(argPerson).filter((item) => {
-      return item.trim() == false;
+      return item.trim() === "";
     });
-    // If there are any contacts with the same number, return false; otherwise, return true
-    if (tempFilteredPpl.length > 0 || invalidInput) {
-      return false;
+
+    if (invalidInput.length > 0) {
+      return 0;
     } else {
-      return true;
+      if (tempFilteredPpl.length > 0) {
+        return 1;
+      } else {
+        return 2;
+      }
     }
+    // If there are any contacts with the same number, return false; otherwise, return true
   }
 }

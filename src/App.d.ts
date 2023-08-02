@@ -7,6 +7,7 @@ export declare class App {
   // Declare private properties for the readline interface and a Person object
   private rl: readline.Interface;
   private person: Person;
+  
 
   // Declare the constructor
   constructor();

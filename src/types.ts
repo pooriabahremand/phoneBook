@@ -1,6 +1,6 @@
 type AddToPhoneBook = {
-    successful : String ,
-    failure : String
-}
+  successful: String;
+  failure: String;
+};
 
-export default AddToPhoneBook
+export default AddToPhoneBook;
