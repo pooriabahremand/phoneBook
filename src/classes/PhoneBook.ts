@@ -7,6 +7,11 @@ export class PhoneBook {
   // Declare properties for the array of people and the file path
   ppl: Person[];
   filePath: string = "./phonebook.json";
+  private messages: { [key: number]: string } = {
+    0: "Invalid input, make sure you answered all questions",
+    1: "Invalid input, this phone number belongs to another person",
+    2: "the contact has been successfully added to phone book",
+  };
 
   // Define the constructor
   constructor() {
@@ -28,17 +33,17 @@ export class PhoneBook {
   }
 
   // Define the add method, which takes a Person object as an argument and returns a boolean
-  public add(argPerson: Person): number {
+  public add(argPerson: Person): string {
     // Check if the person is valid using the validatePerson method
     if (this.validatePerson(argPerson) === 2) {
       // If they are valid, add them to the ppl array and write it to the file
       this.ppl.push(argPerson);
       writeFileSync(this.filePath, JSON.stringify(this.ppl));
       // Return true to indicate that the person was added successfully
-      return 2;
+      return this.messages[2];
     } else {
       // If they are not valid, return false to indicate that they were not added
-      return this.validatePerson(argPerson);
+      return this.messages[this.validatePerson(argPerson)];
     }
   }
 

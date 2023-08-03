@@ -34,11 +34,9 @@ export class App {
 
     // Create a new Person object with the entered information
     let tempPerson = new Person(tempFullName, tempPhoneNumebr);
-    // Attempt to add the new contact to the phone book
-    let status = this.phoneBook.add(tempPerson);
+    // Attempt to add the new contact to the phone book Display a success or error message based on whether the contact was added successfully
 
-    // Display a success or error message based on whether the contact was added successfully
-    console.log(this.messages[status]);
+    console.log(this.phoneBook.add(tempPerson));
 
     // Restart the application
     this.restart();
