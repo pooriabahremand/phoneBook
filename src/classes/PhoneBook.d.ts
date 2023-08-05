@@ -1,9 +1,8 @@
-import { Person } from "./Person";
+import Person from "./Person";
 export declare class PhoneBook {
-    ppl: Person[];
-    filePath: string;
+    private people;
+    private filePath;
     private messages;
     constructor();
     add(argPerson: Person): string;
-    private validatePerson;
 }
