@@ -1,6 +1,6 @@
 // Import the readline module and the Person and PhoneBook classes
 import * as readline from "readline";
-import { Person } from "./classes/Person";
+import  Person  from "./classes/Person";
 import { PhoneBook } from "./classes/PhoneBook";
 // import AddToPhoneBook from "./types";
 
@@ -9,15 +9,6 @@ export class App {
   // Declare private properties for the readline interface and the phone book and an object to store the result of adding the contact
   private rl: readline.Interface;
   private phoneBook: PhoneBook;
-  private messages: { [key: number]: string } = {
-    0: "Invalid input, make sure you answered all questions",
-    1: "Invalid input, this phone number belongs to another person",
-    2: "the contact has been successfully added to phone book",
-  };
-  // private addToPhoneBook: AddToPhoneBook = {
-  //   successful: "the contact has been successfully added to phone book",
-  //   failure: "you had saved this phone number before",
-  // };
 
   // Define the constructor
   constructor() {
@@ -29,41 +20,29 @@ export class App {
   // Define the run method
   public async run() {
     // Prompt the user for their full name and phone number
-    let tempFullName = await this.getFullName();
-    let tempPhoneNumebr = await this.getPhoneNumber();
+    let tempFullName = await this.getInput("what is your full name?");
+    let tempPhoneNumebr = await this.getInput("what is your phone number?");
 
     // Create a new Person object with the entered information
     let tempPerson = new Person(tempFullName, tempPhoneNumebr);
-    // Attempt to add the new contact to the phone book Display a success or error message based on whether the contact was added successfully
 
+    // Attempt to add the new contact to the phone book & Display a success or error message based on whether the contact was added successfully
     console.log(this.phoneBook.add(tempPerson));
 
     // Restart the application
     this.restart();
   }
-
-  // Define a private method for prompting the user for their full name
-  private getFullName(): Promise<string> {
+  // Define a private method for prompting the user for their full name and phone number
+  private getInput(message: string): Promise<string> {
     return new Promise((resolve) => {
-      this.rl.question("what is your full name?", (fullName) => {
-        resolve(fullName);
-      });
-    });
-  }
-
-  // Define a private method for prompting the user for their phone number
-  private getPhoneNumber(): Promise<string> {
-    return new Promise((resolve) => {
-      this.rl.question("what is your phone number?", (number) => {
-        resolve(number);
-        this.rl.close();
+      this.rl.question(message, (input) => {
+        resolve(input);
       });
     });
   }
 
   // Define a private method for restarting the application
   private restart() {
-    this.rl = readline.createInterface(process.stdin, process.stdout);
     this.run();
   }
 }

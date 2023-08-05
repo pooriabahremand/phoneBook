@@ -1,5 +1,5 @@
 // Define the Person class
-export class Person {
+export default class Person {
   // Declare properties for the full name and phone number
   fullName: string;
   Number: string;
