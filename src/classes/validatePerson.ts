@@ -1,4 +1,5 @@
 import Person from "./Person";
+import Exception from "./Exception";
 
 export default class ValidatePerson {
   private people: Person[];
@@ -15,14 +16,14 @@ export default class ValidatePerson {
     });
   }
 
-  public validation(): number {
+  public validation(): boolean {
     if (this.invalidInput.length > 0) {
-      return 0;
+      throw new Exception(0);
     } else {
       if (this.filteredPeople.length > 0) {
-        return 1;
+        throw new Exception(1);
       } else {
-        return 2;
+        return true;
       }
     }
   }

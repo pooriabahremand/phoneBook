@@ -1,7 +1,8 @@
 // Import the readline module and the Person and PhoneBook classes
 import * as readline from "readline";
-import  Person  from "./classes/Person";
+import Person from "./classes/Person";
 import { PhoneBook } from "./classes/PhoneBook";
+import Exception from "./classes/Exception";
 // import AddToPhoneBook from "./types";
 
 // Define the App class
@@ -27,7 +28,13 @@ export class App {
     let tempPerson = new Person(tempFullName, tempPhoneNumebr);
 
     // Attempt to add the new contact to the phone book & Display a success or error message based on whether the contact was added successfully
-    console.log(this.phoneBook.add(tempPerson));
+    try {
+      this.phoneBook.add(tempPerson);
+      console.log("the contact has been successfully added to phone book");
+    } catch (error) {
+      console.log((error as Exception).message);
+      console.log(`Error code : ${(error as Exception).code}`);
+    }
 
     // Restart the application
     this.restart();

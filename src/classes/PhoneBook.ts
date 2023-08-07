@@ -8,12 +8,12 @@ export class PhoneBook {
   // Declare properties for the array of people and the file path
   private people: Person[];
   private filePath: string = "./phonebook.json";
-  private messages: { [key: number]: string } = {
-    0: "Invalid input, make sure you answered all questions",
-    1: "Invalid input, this phone number belongs to another person",
-    2: "the contact has been successfully added to phone book",
-    3: "an error happend , please try again",
-  };
+  // private messages: { [key: number]: string } = {
+  //   0: "Invalid input, make sure you answered all questions",
+  //   1: "Invalid input, this phone number belongs to another person",
+  //   2: "the contact has been successfully added to phone book",
+  //   3: "an error happend , please try again",
+  // };
 
   // Define the constructor
   constructor() {
@@ -33,23 +33,13 @@ export class PhoneBook {
   }
 
   // Define the add method, which takes a Person object as an argument and returns a boolean
-  public add(argPerson: Person): string {
+  public add(argPerson: Person): void {
     // Check if the person is valid using the validatePerson method
     const validatedResult = new ValidatePerson(this.people, argPerson);
-    if (validatedResult.validation() === 2) {
+    if (validatedResult.validation()) {
       // If they are valid, add them to the ppl array and write it to the file
-      try {
-        this.people.push(argPerson);
-        writeFileSync(this.filePath, JSON.stringify(this.people));
-        // Return num 2 to indicate that the person was added successfully
-        return this.messages[2];
-      } catch (error) {
-        return this.messages[3];
-      }
-    } else {
-      // If they are not valid, return false to indicate that they were not added
-      return this.messages[validatedResult.validation()];
+      this.people.push(argPerson);
+      writeFileSync(this.filePath, JSON.stringify(this.people));
     }
   }
 }
-
