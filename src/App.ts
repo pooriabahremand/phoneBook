@@ -1,45 +1,75 @@
-// Import the readline module and the Person and PhoneBook classes
+// Importing required modules
 import * as readline from "readline";
 import Person from "./classes/Person";
 import { PhoneBook } from "./classes/PhoneBook";
 import Exception from "./classes/Exception";
-// import AddToPhoneBook from "./types";
 
-// Define the App class
+// Defining the App class
 export class App {
-  // Declare private properties for the readline interface and the phone book and an object to store the result of adding the contact
   private rl: readline.Interface;
   private phoneBook: PhoneBook;
+  private format: string;
 
-  // Define the constructor
+  // Constructor for the App class
   constructor() {
-    // Create a new readline interface and a new phone book
-    this.rl = readline.createInterface(process.stdin, process.stdout);
-    this.phoneBook = new PhoneBook();
+    // Defining an error message to be displayed if the command line arguments are invalid
+    const errorMsg =
+      "the command that you wrote is invalid , you can choose between json , csv , xml and xlsx";
+
+    // Checking if there are too many command line arguments
+    if (process.argv.length > 3) {
+      console.error(errorMsg);
+      process.exit(1);
+    } else {
+      // Checking if a format was specified in the command line arguments
+      if (process.argv.length === 2) {
+        this.format = "json";
+      } else {
+        this.format = process.argv[2].toLowerCase();
+      }
+
+      // Checking if the specified format is valid
+      if (
+        this.format === "json" ||
+        this.format === "csv" ||
+        this.format === "xml" ||
+        this.format === "xlsx"
+      ) {
+        // Creating a new instance of the PhoneBook class with the specified format
+        this.phoneBook = new PhoneBook(this.format);
+        // Creating a new instance of the readline interface
+        this.rl = readline.createInterface(process.stdin, process.stdout);
+      } else {
+        console.error(errorMsg);
+        process.exit(1);
+      }
+    }
   }
 
-  // Define the run method
+  // Method to run the app
   public async run() {
-    // Prompt the user for their full name and phone number
+    // Getting user input for the full name and phone number
     let tempFullName = await this.getInput("what is your full name?");
     let tempPhoneNumebr = await this.getInput("what is your phone number?");
 
-    // Create a new Person object with the entered information
-    let tempPerson = new Person(tempFullName, tempPhoneNumebr);
+    // Creating a new instance of the Person class with the user input
+    let tempPerson = new Person(tempFullName, tempPhoneNumebr, this.format);
 
-    // Attempt to add the new contact to the phone book & Display a success or error message based on whether the contact was added successfully
     try {
+      // Adding the person to the phone book
       this.phoneBook.add(tempPerson);
       console.log("the contact has been successfully added to phone book");
     } catch (error) {
+      // Handling any errors that may occur
       console.log((error as Exception).message);
       console.log(`Error code : ${(error as Exception).code}`);
     }
 
-    // Restart the application
+    // Restarting the app
     this.restart();
   }
-  // Define a private method for prompting the user for their full name and phone number
+
+  // Method to get user input using readline
   private getInput(message: string): Promise<string> {
     return new Promise((resolve) => {
       this.rl.question(message, (input) => {
@@ -48,7 +78,7 @@ export class App {
     });
   }
 
-  // Define a private method for restarting the application
+  // Method to restart the app
   private restart() {
     this.run();
   }

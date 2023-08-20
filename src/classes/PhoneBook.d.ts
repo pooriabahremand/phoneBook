@@ -2,7 +2,8 @@ import Person from "./Person";
 export declare class PhoneBook {
     private people;
     private filePath;
-    private messages;
-    constructor();
-    add(argPerson: Person): string;
+    private format;
+    private registery;
+    constructor(formatArg: string);
+    add(argPerson: Person): void;
 }
