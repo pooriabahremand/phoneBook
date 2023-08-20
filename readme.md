@@ -14,3 +14,5 @@ To use this program, you need to install the following packages:
 > **Note: These packages should be installed automatically after you clone the project, but if you have problems running the app, check these packages in the `package-lock.json` file.**
 
 Finally, you can start the program by running this command: `npm start`
+
+You can also specify the format you want to use by adding one of these arguments to the command: `csv`, `xml`, or `xlsx`. For example, to use the CSV format, you would run this command: `npm start csv`. If you do not enter any argument, the default behavior is for the format to be JSON.
