@@ -1,6 +1,7 @@
 // Importing required modules
 import Person from "./Person";
 import Exception from "./Exception";
+import { ValidationError, InputError } from "./Exception";
 
 // Defining the ValidatePerson class
 export default class ValidatePerson {
@@ -29,13 +30,14 @@ export default class ValidatePerson {
   public validation(): boolean {
     // Throwing an exception if there are any empty values in argPerson
     if (this.invalidInput.length > 0) {
-      throw new Exception(0);
+      throw new InputError(0);
     } else if (this.filteredPeople.length > 0) {
       // Throwing an exception if there is already a person with the same phone number as argPerson
-      throw new Exception(1);
+      // console.log(this.filteredPeople[0]);
+      throw new ValidationError(1, this.filteredPeople[0]);
     } else if (!this.startsWithZero) {
       // Throwing an exception if the phone number of argPerson doesn't start with 0
-      throw new Exception(2);
+      throw new InputError(2);
     } else {
       // Returning true if all validations pass
       return true;

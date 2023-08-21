@@ -2,7 +2,8 @@
 import * as readline from "readline";
 import Person from "./classes/Person";
 import { PhoneBook } from "./classes/PhoneBook";
-import Exception from "./classes/Exception";
+
+import { ValidationError, InputError } from "./classes/Exception";
 
 // Defining the App class
 export class App {
@@ -61,8 +62,17 @@ export class App {
       console.log("the contact has been successfully added to phone book");
     } catch (error) {
       // Handling any errors that may occur
-      console.log((error as Exception).message);
-      console.log(`Error code : ${(error as Exception).code}`);
+      if (error instanceof ValidationError) {
+        console.error((error as ValidationError).name);
+        console.error(`Error message : ${(error as ValidationError).message}`);
+        console.error("contact with the same phone number ");
+        console.error((error as ValidationError).cause);
+      } else if (error instanceof InputError) {
+        console.error((error as InputError).name);
+        console.error(`Error message : ${(error as InputError).message}`);
+      } else {
+        console.log(error);
+      }
     }
 
     // Restarting the app
