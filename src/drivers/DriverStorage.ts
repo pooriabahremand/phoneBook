@@ -7,7 +7,7 @@ export default class DriverStorage {
   private format: string;
   public driver: JsonDriver | XmlDriver | XlsxDriver | CsvDriver;
 
-  constructor(argFormat: string, argRegistery: Person[]) {
+  constructor(argFormat: string) {
     this.format = argFormat;
     console.log(this.format);
     switch (this.format) {

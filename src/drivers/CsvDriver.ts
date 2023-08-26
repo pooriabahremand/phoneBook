@@ -3,6 +3,7 @@ import Person from "./../classes/Person";
 import papa from "papaparse";
 import ValidatePerson from "../classes/validation/validatePerson";
 import ReadRegistery from "../classes/ReadRegistery";
+import DriverStorage from "./DriverStorage";
 interface PapaType {
   data: Person[];
 }
@@ -23,11 +24,11 @@ export default class CsvDriver {
     }
   }
 
-  validatePerson(argPerson: Person) {
+  validatePerson(argPerson: Person): void {
     new ValidatePerson(this.registery, argPerson).validation();
   }
 
-  add(argPerson: Person) {
+  add(argPerson: Person): void {
     this.people.push(argPerson);
     const content = papa.unparse(this.people);
     writeFileSync(this.filePath, content);
