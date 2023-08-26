@@ -2,49 +2,22 @@
 import * as readline from "readline";
 import Person from "./classes/Person";
 import { PhoneBook } from "./classes/PhoneBook";
-
+import ValidateArgument from "./classes/validation/ValidataArgument";
 import { ValidationError, InputError } from "./classes/Exception";
 
 // Defining the App class
 export class App {
-  private rl: readline.Interface;
+  private readLine: readline.Interface;
   private phoneBook: PhoneBook;
   private format: string;
 
   // Constructor for the App class
   constructor() {
     // Defining an error message to be displayed if the command line arguments are invalid
-    const errorMsg =
-      "the command that you wrote is invalid , you can choose between json , csv , xml and xlsx";
-
-    // Checking if there are too many command line arguments
-    if (process.argv.length > 3) {
-      console.error(errorMsg);
-      process.exit(1);
-    } else {
-      // Checking if a format was specified in the command line arguments
-      if (process.argv.length === 2) {
-        this.format = "json";
-      } else {
-        this.format = process.argv[2].toLowerCase();
-      }
-
-      // Checking if the specified format is valid
-      if (
-        this.format === "json" ||
-        this.format === "csv" ||
-        this.format === "xml" ||
-        this.format === "xlsx"
-      ) {
-        // Creating a new instance of the PhoneBook class with the specified format
-        this.phoneBook = new PhoneBook(this.format);
-        // Creating a new instance of the readline interface
-        this.rl = readline.createInterface(process.stdin, process.stdout);
-      } else {
-        console.error(errorMsg);
-        process.exit(1);
-      }
-    }
+    new ValidateArgument();
+    this.format = process.argv[2];
+    this.phoneBook = new PhoneBook(this.format);
+    this.readLine = readline.createInterface(process.stdin, process.stdout);
   }
 
   // Method to run the app
@@ -82,7 +55,7 @@ export class App {
   // Method to get user input using readline
   private getInput(message: string): Promise<string> {
     return new Promise((resolve) => {
-      this.rl.question(message, (input) => {
+      this.readLine.question(message, (input) => {
         resolve(input);
       });
     });

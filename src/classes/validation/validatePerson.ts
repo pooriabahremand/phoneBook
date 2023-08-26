@@ -1,7 +1,7 @@
 // Importing required modules
-import Person from "./Person";
-import Exception from "./Exception";
-import { ValidationError, InputError } from "./Exception";
+import Person from "../Person";
+import Exception from "../Exception";
+import { ValidationError, InputError } from "../Exception";
 
 // Defining the ValidatePerson class
 export default class ValidatePerson {
