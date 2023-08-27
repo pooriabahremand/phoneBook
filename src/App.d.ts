@@ -1,5 +1,5 @@
 export declare class App {
-    private rl;
+    private readLine;
     private phoneBook;
     private format;
     constructor();
