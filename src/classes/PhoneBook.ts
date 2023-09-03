@@ -13,7 +13,6 @@ export class PhoneBook {
 
   // Constructor for the PhoneBook class
   constructor(formatArg: string) {
-
     // Checking if the "./storage" directory exists, if not, creating it
     if (!existsSync("./storage")) {
       mkdirSync("./storage");
@@ -35,8 +34,6 @@ export class PhoneBook {
 
   // Public method add that takes a Person object as argument and returns void
   public add(argPerson: Person): void {
-    // Validating the argPerson object using the validatePerson method of this.driverStorage.driver
-    this.driverStorage.driver.validatePerson(argPerson);
     // Adding the argPerson object using the add method of this.driverStorage.driver
     this.driverStorage.driver.add(argPerson);
   }

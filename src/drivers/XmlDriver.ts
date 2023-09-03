@@ -3,19 +3,16 @@ import { writeFileSync, readFileSync } from "fs";
 import Person from "./../classes/Person";
 import { XMLParser, X2jOptions, XMLBuilder } from "fast-xml-parser";
 import ValidatePerson from "../classes/validation/validatePerson";
-import ReadRegistery from "../classes/ReadRegistery";
+import { DriverInterface } from "./DriverStorage";
 
 // Exporting the XmlDriver class as the default export
-export default class XmlDriver {
+export default class XmlDriver implements DriverInterface {
   // Declaring private properties people, filePath, and registery
   private people: Person[];
   private filePath: string = "./storage/phonebook.xml";
-  private registery: Person[];
 
   // Constructor for the XmlDriver class
   constructor() {
-    // Initializing this.registery with the value of new ReadRegistery().registery
-    this.registery = new ReadRegistery().registery;
     // Defining options for the XMLParser
     const options = {
       ignoreNameSpace: true,
@@ -39,14 +36,10 @@ export default class XmlDriver {
     }
   }
 
-  // Public method validatePerson that takes a Person object as argument and returns void
-  public validatePerson(argPerson: Person) {
-    // Creating a new instance of ValidatePerson with this.registery and argPerson as arguments and calling its validation method
-    new ValidatePerson(this.registery, argPerson).validation();
-  }
-
   // Public method add that takes a Person object as argument and returns void
   public add(argPerson: Person) {
+    // Creating a new instance of ValidatePerson with this.people and argPerson as arguments and calling its validation method
+    new ValidatePerson(this.people, argPerson).validation();
     // Pushing argPerson to this.people
     this.people.push(argPerson);
     // Creating a new instance of XMLBuilder with oneListGroup set to true and assigning it to builder
@@ -55,9 +48,5 @@ export default class XmlDriver {
     const result = builder.build(this.people);
     // Writing result to this.filePath using writeFileSync
     writeFileSync(this.filePath, result);
-    // Pushing argPerson to this.registery
-    this.registery.push(argPerson);
-    // Writing this.registery as a JSON string to "./storage/registery.json" using writeFileSync
-    writeFileSync("./storage/registery.json", JSON.stringify(this.registery));
   }
 }

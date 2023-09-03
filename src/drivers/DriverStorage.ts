@@ -2,9 +2,10 @@ import JsonDriver from "./JsonDriver";
 import CsvDriver from "./CsvDriver";
 import XmlDriver from "./XmlDriver";
 import XlsxDriver from "./XlsxDriver";
+import Person from "../classes/Person";
 export default class DriverStorage {
   private format: string;
-  public driver: JsonDriver | XmlDriver | XlsxDriver | CsvDriver;
+  public driver: DriverInterface;
 
   constructor(argFormat: string) {
     this.format = argFormat;
@@ -28,4 +29,8 @@ export default class DriverStorage {
         break;
     }
   }
+}
+
+export interface DriverInterface {
+  add(argPerson: Person): void;
 }

@@ -1,22 +1,18 @@
 // Importing required modules
-import { writeFileSync } from "fs";
 import Person from "./../classes/Person";
 import reader from "xlsx";
 import XLSX from "xlsx";
 import ValidatePerson from "../classes/validation/validatePerson";
-import ReadRegistery from "../classes/ReadRegistery";
+import { DriverInterface } from "./DriverStorage";
 
 // Exporting the XlsxDriver class as the default export
-export default class XlsxDriver {
+export default class XlsxDriver implements DriverInterface{
   // Declaring private properties people, filePath, and registery
   private people: Person[];
   private filePath: string = "./storage/phonebook.xlsx";
-  private registery: Person[];
 
   // Constructor for the XlsxDriver class
   constructor() {
-    // Initializing this.registery with the value of new ReadRegistery().registery
-    this.registery = new ReadRegistery().registery;
     // Initializing an empty array for data
     let data: Person[] = [];
     // Reading the contents of this.filePath using reader.readFile and assigning it to file
@@ -44,14 +40,10 @@ export default class XlsxDriver {
     }
   }
 
-  // Public method validatePerson that takes a Person object as argument and returns void
-  public validatePerson(argPerson: Person) {
-    // Creating a new instance of ValidatePerson with this.registery and argPerson as arguments and calling its validation method
-    new ValidatePerson(this.registery, argPerson).validation();
-  }
-
   // Public method add that takes a Person object as argument and returns void
   public add(argPerson: Person) {
+    // Creating a new instance of ValidatePerson with this.people and argPerson as arguments and calling its validation method
+    new ValidatePerson(this.people, argPerson).validation();
     // Pushing argPerson to this.people
     this.people.push(argPerson);
     // Creating a new workbook using XLSX.utils.book_new and assigning it to workbook
@@ -62,9 +54,5 @@ export default class XlsxDriver {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     // Writing workbook to this.filePath using XLSX.writeFile
     XLSX.writeFile(workbook, this.filePath);
-    // Pushing argPerson to this.registery
-    this.registery.push(argPerson);
-    // Writing this.registery as a JSON string to "./storage/registery.json" using writeFileSync
-    writeFileSync("./storage/registery.json", JSON.stringify(this.registery));
   }
 }
