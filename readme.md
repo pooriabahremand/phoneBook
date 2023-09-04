@@ -16,3 +16,7 @@ To use this program, you need to install the following packages:
 Finally, you can start the program by running this command: `npm start`
 
 You can also specify the format you want to use by adding one of these arguments to the command: `csv`, `xml`, or `xlsx`. For example, to use the CSV format, you would run this command: `npm start csv`. If you do not enter any argument, the default behavior is for the format to be JSON.
+
+## New Feature: Converting Between Formats
+
+In the newest update, we added the functionality of converting different formats to each other. For example, by running this command: `npm start json xlsx`, you can convert data from a JSON file to an XLSX file. This allows you to easily switch between different formats and work with your data in the format that best suits your needs.
