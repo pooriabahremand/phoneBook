@@ -7,8 +7,8 @@ import { DriverInterface } from "./DriverStorage";
 // Exporting the JsonDriver class as the default export
 export default class JsonDriver implements DriverInterface {
   // Declaring private properties people, filePath, and registery
-  private people: Person[];
-  private filePath: string = "./storage/phonebook.json";
+  public people: Person[];
+  public filePath: string = "./storage/phonebook.json";
 
   // Constructor for the JsonDriver class
   constructor() {
@@ -25,12 +25,16 @@ export default class JsonDriver implements DriverInterface {
   }
 
   // Public method add that takes a Person object as argument and returns void
-  public add(argPerson: Person) {
-    // Creating a new instance of ValidatePerson with this.registery and argPerson as arguments and calling its validation method
-    new ValidatePerson(this.people, argPerson).validation();
-    // Pushing argPerson to this.people
-    this.people.push(argPerson);
-    // Writing this.people as a JSON string to this.filePath using writeFileSync
-    writeFileSync(this.filePath, JSON.stringify(this.people));
+  public add(argPerson: Person | Person[]) {
+    if (argPerson instanceof Person) {
+      // Creating a new instance of ValidatePerson with this.registery and argPerson as arguments and calling its validation method
+      new ValidatePerson(this.people, argPerson).validation();
+      // Pushing argPerson to this.people
+      this.people.push(argPerson);
+      // Writing this.people as a JSON string to this.filePath using writeFileSync
+      writeFileSync(this.filePath, JSON.stringify(this.people));
+    } else {
+      writeFileSync(this.filePath, JSON.stringify(argPerson));
+    }
   }
 }

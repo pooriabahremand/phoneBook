@@ -8,8 +8,8 @@ import { DriverInterface } from "./DriverStorage";
 // Exporting the XmlDriver class as the default export
 export default class XmlDriver implements DriverInterface {
   // Declaring private properties people, filePath, and registery
-  private people: Person[];
-  private filePath: string = "./storage/phonebook.xml";
+  public people: Person[];
+  public filePath: string = "./storage/phonebook.xml";
 
   // Constructor for the XmlDriver class
   constructor() {
@@ -37,16 +37,22 @@ export default class XmlDriver implements DriverInterface {
   }
 
   // Public method add that takes a Person object as argument and returns void
-  public add(argPerson: Person) {
-    // Creating a new instance of ValidatePerson with this.people and argPerson as arguments and calling its validation method
-    new ValidatePerson(this.people, argPerson).validation();
-    // Pushing argPerson to this.people
-    this.people.push(argPerson);
-    // Creating a new instance of XMLBuilder with oneListGroup set to true and assigning it to builder
-    const builder = new XMLBuilder({ oneListGroup: true });
-    // Building an XML string from this.people using builder.build and assigning it to result
-    const result = builder.build(this.people);
-    // Writing result to this.filePath using writeFileSync
-    writeFileSync(this.filePath, result);
+  public add(argPerson: Person | Person[]) {
+    if (argPerson instanceof Person) {
+      // Creating a new instance of ValidatePerson with this.people and argPerson as arguments and calling its validation method
+      new ValidatePerson(this.people, argPerson).validation();
+      // Pushing argPerson to this.people
+      this.people.push(argPerson);
+      // Creating a new instance of XMLBuilder with oneListGroup set to true and assigning it to builder
+      const builder = new XMLBuilder({ oneListGroup: true });
+      // Building an XML string from this.people using builder.build and assigning it to result
+      const result = builder.build(this.people);
+      // Writing result to this.filePath using writeFileSync
+      writeFileSync(this.filePath, result);
+    } else {
+      const builder = new XMLBuilder({ oneListGroup: true });
+      const result = builder.build(argPerson);
+      writeFileSync(this.filePath, result);
+    }
   }
 }

@@ -6,10 +6,10 @@ import ValidatePerson from "../classes/validation/validatePerson";
 import { DriverInterface } from "./DriverStorage";
 
 // Exporting the XlsxDriver class as the default export
-export default class XlsxDriver implements DriverInterface{
+export default class XlsxDriver implements DriverInterface {
   // Declaring private properties people, filePath, and registery
-  private people: Person[];
-  private filePath: string = "./storage/phonebook.xlsx";
+  public people: Person[];
+  public filePath: string = "./storage/phonebook.xlsx";
 
   // Constructor for the XlsxDriver class
   constructor() {
@@ -41,18 +41,27 @@ export default class XlsxDriver implements DriverInterface{
   }
 
   // Public method add that takes a Person object as argument and returns void
-  public add(argPerson: Person) {
-    // Creating a new instance of ValidatePerson with this.people and argPerson as arguments and calling its validation method
-    new ValidatePerson(this.people, argPerson).validation();
-    // Pushing argPerson to this.people
-    this.people.push(argPerson);
-    // Creating a new workbook using XLSX.utils.book_new and assigning it to workbook
-    const workbook = XLSX.utils.book_new();
-    // Converting this.people to a sheet using XLSX.utils.json_to_sheet and assigning it to worksheet
-    const worksheet = XLSX.utils.json_to_sheet(this.people);
-    // Appending worksheet to workbook with the name "Sheet1" using XLSX.utils.book_append_sheet
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    // Writing workbook to this.filePath using XLSX.writeFile
-    XLSX.writeFile(workbook, this.filePath);
+  public add(argPerson: Person | Person[]) {
+    if (argPerson instanceof Person) {
+      // Creating a new instance of ValidatePerson with this.people and argPerson as arguments and calling its validation method
+      new ValidatePerson(this.people, argPerson).validation();
+      // Pushing argPerson to this.people
+      this.people.push(argPerson);
+      // Creating a new workbook using XLSX.utils.book_new and assigning it to workbook
+      const workbook = XLSX.utils.book_new();
+      // Converting this.people to a sheet using XLSX.utils.json_to_sheet and assigning it to worksheet
+      const worksheet = XLSX.utils.json_to_sheet(this.people);
+      // Appending worksheet to workbook with the name "Sheet1" using XLSX.utils.book_append_sheet
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      // Writing workbook to this.filePath using XLSX.writeFile
+      XLSX.writeFile(workbook, this.filePath);
+    } else {
+      const workbook = XLSX.utils.book_new();
+      const worksheet = XLSX.utils.json_to_sheet(argPerson);
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      XLSX.writeFile(workbook, this.filePath);
+    }
   }
+
+  public convertToXlsx() {}
 }

@@ -9,7 +9,6 @@ export default class DriverStorage {
 
   constructor(argFormat: string) {
     this.format = argFormat;
-    console.log(this.format);
     switch (this.format) {
       case "json":
         // make an instance of json driver
@@ -32,5 +31,7 @@ export default class DriverStorage {
 }
 
 export interface DriverInterface {
-  add(argPerson: Person): void;
+  people: Person[];
+  filePath: string;
+  add(argPerson: Person | Person[]): void;
 }
