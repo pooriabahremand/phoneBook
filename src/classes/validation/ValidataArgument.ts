@@ -1,7 +1,7 @@
 import formats from "../../utils/formats";
 export default class ValidateArgument {
   private errorMsg: string =
-    "the command that you wrote is invalid , you can choose between json , csv , xml and xlsx like: npm start xml. or you can command to convert one type to another one like this : npm start xml json : with this format you commant to convert the xml storage to json";
+    "the command that you wrote is invalid , you can choose between json , csv , xml and xlsx like: npm start xml. or you can command to convert one type to another like this : npm start xml json : with this format you command to convert the xml storage to json";
   constructor() {
     if (process.argv.length === 4) {
       if (

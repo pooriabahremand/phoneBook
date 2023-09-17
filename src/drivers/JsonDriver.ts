@@ -1,40 +1,30 @@
 // Importing required modules
-import { writeFileSync, readFileSync } from "fs";
+import { writeFileSync } from "fs";
+import path from "path";
 import Person from "./../classes/Person";
-import ValidatePerson from "../classes/validation/validatePerson";
 import { DriverInterface } from "./DriverStorage";
 
 // Exporting the JsonDriver class as the default export
 export default class JsonDriver implements DriverInterface {
   // Declaring private properties people, filePath, and registery
   public people: Person[];
-  public filePath: string = "./storage/phonebook.json";
+  public filePath: string;
 
   // Constructor for the JsonDriver class
-  constructor() {
-    // Reading the contents of this.filePath and assigning it to the content variable
-    const content = readFileSync(this.filePath, "utf-8");
-    // Checking if content has a truthy value
-    if (content) {
-      // If content has a truthy value, parsing it as JSON and assigning it to this.people
-      this.people = JSON.parse(content);
-    } else {
-      // If content does not have a truthy value, assigning an empty array to this.people
-      this.people = [];
-    }
+  constructor(argPeople: Person[]) {
+    this.filePath = path.join("storage", "phoneBook.json");
+    this.people = argPeople;
   }
 
   // Public method add that takes a Person object as argument and returns void
-  public add(argPerson: Person | Person[]) {
-    if (argPerson instanceof Person) {
-      // Creating a new instance of ValidatePerson with this.registery and argPerson as arguments and calling its validation method
-      new ValidatePerson(this.people, argPerson).validation();
-      // Pushing argPerson to this.people
-      this.people.push(argPerson);
-      // Writing this.people as a JSON string to this.filePath using writeFileSync
-      writeFileSync(this.filePath, JSON.stringify(this.people));
-    } else {
-      writeFileSync(this.filePath, JSON.stringify(argPerson));
-    }
+  public add(argPerson: Person) {
+    // Pushing argPerson to this.people
+
+    this.people.push(argPerson);
+    writeFileSync(this.filePath, JSON.stringify(this.people));
+  }
+
+  public convert(argPeople: Person[]) {
+    writeFileSync(this.filePath, JSON.stringify(argPeople));
   }
 }

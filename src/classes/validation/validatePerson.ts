@@ -10,26 +10,20 @@ export default class ValidatePerson {
   private startsWithZero: boolean = true;
 
   // Constructor for the ValidatePerson class
-  constructor(argPeople?: Person[], argPerson?: Person) {
-    // Checking if argPeople is defined
-    if (argPeople) {
-      this.people = argPeople;
-      // Filtering the people array to find people with the same phone number as argPerson
-      this.filteredPeople = this.people.filter((contact: Person) => {
-        return contact.Number === argPerson?.Number;
-      });
-    }
+  constructor(argPeople: Person[], argPerson: Person) {
+    this.people = argPeople;
+    // Filtering the people array to find people with the same phone number as argPerson
+    this.filteredPeople = this.people.filter((contact: Person) => {
+      return contact.Number === argPerson?.Number;
+    });
 
-    // Checking if argPerson is defined
-    if (argPerson) {
-      // Filtering the values of argPerson to find any empty values
-      this.invalidInput = Object.values(argPerson).filter((item) => {
-        return item.trim() === "";
-      });
+    // Filtering the values of argPerson to find any empty values
+    this.invalidInput = Object.values(argPerson).filter((item) => {
+      return item.trim() === "";
+    });
 
-      // Checking if the phone number of argPerson starts with 0
-      this.startsWithZero = argPerson.Number.startsWith("0");
-    }
+    // Checking if the phone number of argPerson starts with 0
+    this.startsWithZero = argPerson.Number.startsWith("0");
   }
 
   // Method to validate a person
@@ -48,18 +42,5 @@ export default class ValidatePerson {
       // Returning true if all validations pass
       return true;
     }
-  }
-
-  public convertValidation(
-    argOriginFormat: Person[],
-    argDestinationFormat: Person[]
-  ) {
-    argDestinationFormat.map((destContact) => {
-      argOriginFormat.map((originContact) => {
-        if (originContact.Number === destContact.Number) {
-          throw new ValidationError(1, originContact);
-        }
-      });
-    });
   }
 }

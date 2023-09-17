@@ -4,16 +4,22 @@ import Person from "./classes/Person";
 import { PhoneBook } from "./classes/PhoneBook";
 import ValidateArgument from "./classes/validation/ValidataArgument";
 import ErrorLogger from "./classes/ErrorLogger";
+import DriverStorage from "./drivers/DriverStorage";
 import CommandLineParser from "./classes/CommandLineParser";
-import FileConverter from "./classes/FileConverter";
+// import FileConverter from "./classes/FileConverter";
+import ConvertValidation from "./classes/validation/ConvertValidation";
+import FileProcessor from "./classes/readFiles/fileProcessors";
+import { File } from "buffer";
 
 // Exporting the App class
 export class App {
   // Declaring private properties readLine, phoneBook, and format
   private readLine!: readline.Interface;
+  private storageDriver!: DriverStorage;
   private phoneBook!: PhoneBook;
-  private format!: string;
+  private format: string | string[];
   private duty: string;
+  private people: Person[][];
 
   // Constructor for the App class
   constructor() {
@@ -28,6 +34,12 @@ export class App {
       this.phoneBook = new PhoneBook(this.format);
       // Creating a new readline interface and assigning it to this.readLine
       this.readLine = readline.createInterface(process.stdin, process.stdout);
+      this.people = [];
+    } else {
+      this.format = [process.argv[2], process.argv[3]];
+      this.storageDriver = new DriverStorage(this.format);
+      this.people = new FileProcessor(this.format).processFiles();
+      new ConvertValidation(this.people).validation();
     }
   }
 
@@ -53,7 +65,8 @@ export class App {
       this.restart();
     } else {
       try {
-        new FileConverter().convert();
+        this.storageDriver.add([...this.people[0], ...this.people[1]]);
+        console.log("the convertion has been successfuly completed");
       } catch (error) {
         new ErrorLogger(error as Error);
       }
