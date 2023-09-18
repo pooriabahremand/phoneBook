@@ -30,7 +30,11 @@ export default class ReadXml {
       // Getting the values of jsonObj as an array of Person objects and assigning it to contacts
       const contacts: Person[] = Object.values(jsonObj);
       // Assigning contacts to this.people
-      return contacts;
+      const neeContacts: Person[] = contacts.map((contact) => {
+        contact.Number = "0" + contact.Number;
+        return { ...contact };
+      });
+      return neeContacts;
     } else {
       // If content does not have a length greater than 0, assigning an empty array to this.people
       return [];

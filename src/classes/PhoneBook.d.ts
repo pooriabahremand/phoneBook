@@ -1,6 +1,7 @@
 import Person from "./Person";
 export declare class PhoneBook {
-    private driverStorage;
+    private format;
+    private storageDriver;
     constructor(formatArg: string);
     add(argPerson: Person): void;
 }

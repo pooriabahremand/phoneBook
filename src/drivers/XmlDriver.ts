@@ -1,40 +1,49 @@
-// Importing required modules
+// Import necessary modules and classes
 import { writeFileSync } from "fs";
 import path from "path";
 import Person from "./../classes/Person";
 import { XMLBuilder } from "fast-xml-parser";
 import { DriverInterface } from "./DriverStorage";
 
-// Exporting the XmlDriver class as the default export
+// Define the XmlDriver class that implements the DriverInterface
 export default class XmlDriver implements DriverInterface {
-  // Declaring private properties people, filePath, and registery
+  // Declare properties for storing people data and file path
   public people: Person[];
   public filePath: string;
 
   // Constructor for the XmlDriver class
   constructor(argPeople: Person[]) {
+    // Set the file path for the XML file
     this.filePath = path.join("storage", "phoneBook.xml");
+
+    // Initialize the people property with the provided data
     this.people = argPeople;
   }
 
-  // Public method add that takes a Person object as argument and returns void
+  // Method to add a new person to the people data and update the XML file
   public add(argPerson: Person) {
-    // Pushing argPerson to this.people
+    // Add the new person to the people data
     this.people.push(argPerson);
-    // Creating a new instance of XMLBuilder with oneListGroup set to true and assigning it to builder
+
+    // Create a new XMLBuilder instance with oneListGroup set to true
     const builder = new XMLBuilder({ oneListGroup: true });
-    // Building an XML string from this.people using builder.build and assigning it to result
+
+    // Convert the updated people data to an XML string
     const result = builder.build(this.people);
-    // Writing result to this.filePath using writeFileSync
+
+    // Write the updated XML data to the file
     writeFileSync(this.filePath, result);
   }
 
-  public convert(argPeople: Person[]): void {
-    // Creating a new instance of XMLBuilder with oneListGroup set to true and assigning it to builder
+  // Method to convert an array of Person objects to XML format and write it to the file
+  public convert(argPeople: Person[]) {
+    // Create a new XMLBuilder instance with oneListGroup set to true
     const builder = new XMLBuilder({ oneListGroup: true });
-    // Building an XML string from this.people using builder.build and assigning it to result
+
+    // Convert the provided people data to an XML string
     const result = builder.build(argPeople);
-    // Writing result to this.filePath using writeFileSync
+
+    // Write the converted XML data to the file
     writeFileSync(this.filePath, result);
   }
 }

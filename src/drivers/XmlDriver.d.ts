@@ -1,9 +1,9 @@
 import Person from "./../classes/Person";
-export default class XmlDriver {
-    private people;
-    private filePath;
-    private registery;
-    constructor();
-    validatePerson(argPerson: Person): void;
+import { DriverInterface } from "./DriverStorage";
+export default class XmlDriver implements DriverInterface {
+    people: Person[];
+    filePath: string;
+    constructor(argPeople: Person[]);
     add(argPerson: Person): void;
+    convert(argPeople: Person[]): void;
 }

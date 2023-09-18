@@ -1,9 +1,15 @@
-import JsonDriver from "./JsonDriver";
-import CsvDriver from "./CsvDriver";
-import XmlDriver from "./XmlDriver";
-import XlsxDriver from "./XlsxDriver";
+import Person from "../classes/Person";
+export interface DriverInterface {
+    people: Person[];
+    filePath: string;
+    add(argPerson: Person): void;
+    convert(argPeople: Person[]): void;
+}
 export default class DriverStorage {
     private format;
-    driver: JsonDriver | XmlDriver | XlsxDriver | CsvDriver;
-    constructor(argFormat: string);
+    driver: DriverInterface;
+    people: Person[];
+    constructor(argFormat: string | string[]);
+    add(argPerson: Person): void;
+    convert(argPeople: Person[]): void;
 }

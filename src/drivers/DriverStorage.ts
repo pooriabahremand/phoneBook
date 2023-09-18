@@ -1,3 +1,4 @@
+// Import necessary modules and classes
 import JsonDriver from "./JsonDriver";
 import CsvDriver from "./CsvDriver";
 import XmlDriver from "./XmlDriver";
@@ -8,8 +9,8 @@ import ValidatePerson from "../classes/validation/validatePerson";
 import ReadJson from "../classes/readFiles/readJson";
 import ReadXml from "../classes/readFiles/readXml";
 import ReadXlsx from "../classes/readFiles/readXlsx";
-import { type } from "os";
 
+// Define the DriverInterface
 export interface DriverInterface {
   people: Person[];
   filePath: string;
@@ -17,56 +18,49 @@ export interface DriverInterface {
   convert(argPeople: Person[]): void;
 }
 
+// Define the DriverStorage class
 export default class DriverStorage {
   private format: string | string[];
   public driver: DriverInterface;
   public people: Person[];
 
+  // Constructor for the DriverStorage class
   constructor(argFormat: string | string[]) {
     this.format = argFormat;
+
+    // If format is an array, create an empty people array and a driver based on the second format
     if (typeof this.format !== "string") {
       this.people = [];
       switch (this.format[1]) {
         case "json":
-          // make an instance of json driver
-
           this.driver = new JsonDriver(this.people);
           break;
         case "csv":
-          // make an instance of csv driver
-
           this.driver = new CsvDriver(this.people);
           break;
         case "xml":
-          // make an instance of xml driver
-
           this.driver = new XmlDriver(this.people);
           break;
         default:
-          // make an instance of xlsx driver
-
           this.driver = new XlsxDriver(this.people);
           break;
       }
     } else {
+      // If format is a string, read people data from a file of that format and create a driver based on the format
       switch (this.format) {
         case "json":
-          // make an instance of json driver
           this.people = new ReadJson().readPeople();
           this.driver = new JsonDriver(this.people);
           break;
         case "csv":
-          // make an instance of csv driver
           this.people = new ReadCsv().readPeople();
           this.driver = new CsvDriver(this.people);
           break;
         case "xml":
-          // make an instance of xml driver
           this.people = new ReadXml().readPeople();
           this.driver = new XmlDriver(this.people);
           break;
         default:
-          // make an instance of xlsx driver
           this.people = new ReadXlsx().readPeople();
           this.driver = new XlsxDriver(this.people);
           break;
@@ -74,12 +68,18 @@ export default class DriverStorage {
     }
   }
 
-  public add(argPerson: Person | Person[]) {
-    if (argPerson instanceof Person) {
-      new ValidatePerson(this.people, argPerson).validation();
-      this.driver.add(argPerson);
-    } else {
-      this.driver.convert(argPerson);
-    }
+  // Method to add a person to the people data and update the file
+  public add(argPerson: Person) {
+    // Validate the person data before adding it
+    new ValidatePerson(this.people, argPerson).validation();
+
+    // Add the person to the people data and update the file
+    this.driver.add(argPerson);
+  }
+
+  // Method to convert an array of Person objects to the appropriate format and write it to the file
+  public convert(argPeople: Person[]) {
+    // Convert the people data and update the file
+    this.driver.convert(argPeople);
   }
 }
