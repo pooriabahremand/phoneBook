@@ -18,7 +18,7 @@ export default class ReadXml {
     const options = {
       ignoreNameSpace: true,
       ignoreRootElement: true,
-    } as X2jOptions;
+    } as unknown as X2jOptions;
     // Creating a new instance of XMLParser with options as argument and assigning it to parser
     const parser = new XMLParser(options);
     // Reading the contents of this.filePath and assigning it to content
