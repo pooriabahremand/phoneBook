@@ -11,7 +11,7 @@ export class PhoneBook {
   private storageDriver: DriverStorage;
 
   // Constructor for the PhoneBook class
-  constructor(formatArg: string) {
+  constructor(formatArg: string, argStorageDriver: DriverStorage) {
     // Set the format for the phone book
     this.format = formatArg;
 
@@ -21,19 +21,18 @@ export class PhoneBook {
     }
 
     // Ensure a file exists for each format in the storage directory
-    for (const format of formats) {
-      const filePath = path.join("storage", `phoneBook.${format}`);
-      if (!existsSync(filePath)) {
-        writeFileSync(filePath, "");
-      }
+
+    const filePath = path.join("storage", `phoneBook.${this.format}`);
+    if (!existsSync(filePath)) {
+      writeFileSync(filePath, "");
     }
 
     // Create a new DriverStorage instance for managing data storage
-    this.storageDriver = new DriverStorage(this.format);
+    this.storageDriver = argStorageDriver;
   }
 
   // Method to add a new person to the phone book
   public add(argPerson: Person): void {
-    this.storageDriver.add(argPerson);
+    this.storageDriver.driver.add(argPerson);
   }
 }

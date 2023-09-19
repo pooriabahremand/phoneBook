@@ -3,10 +3,11 @@ import * as readline from "readline";
 import Person from "./classes/Person";
 import { PhoneBook } from "./classes/PhoneBook";
 import ValidateArgument from "./classes/validation/ValidataArgument";
+import ValidatePerson from "./classes/validation/validatePerson";
 import ErrorLogger from "./classes/ErrorLogger";
 import DriverStorage from "./drivers/DriverStorage";
 import CommandLineParser from "./classes/CommandLineParser";
-import ConvertValidation from "./classes/validation/ConvertValidation";
+import ImportValidation from "./classes/validation/importValidation";
 import FileProcessor from "./classes/readFiles/fileProcessors";
 
 // Exporting the App class
@@ -17,7 +18,7 @@ export class App {
   private phoneBook!: PhoneBook;
   private format: string | string[];
   private duty: string;
-  private people: Person[][];
+  private people: Person[];
 
   // Constructor for the App class
   constructor() {
@@ -29,21 +30,31 @@ export class App {
     if (this.duty === "builder") {
       // Assigning the value of process.argv[2] to this.format
       this.format = process.argv[2];
+      // making a new instance of DriverStorage class
+      this.storageDriver = new DriverStorage(this.format);
       // Creating a new instance of PhoneBook with this.format as argument and assigning it to this.phoneBook
-      this.phoneBook = new PhoneBook(this.format);
+      this.phoneBook = new PhoneBook(this.format, this.storageDriver);
       // Creating a new readline interface and assigning it to this.readLine
       this.readLine = readline.createInterface(process.stdin, process.stdout);
-      this.people = [];
+      //making an array of people full of person objects
+      this.people = this.storageDriver.driver.read();
       // if it is not equal to builder
     } else {
-      // assigning the format of 2 cmd arguments to an array of formats
-      this.format = [process.argv[2], process.argv[3]];
-      // making a new instance of DriverStorage class an passing format to it's ctor
+      // Assigning the value of process.argv[3] to this.format
+      this.format = process.argv[3];
+      // making a new instance of DriverStorage class with origin arg
       this.storageDriver = new DriverStorage(this.format);
-      // making an array of people that is combined of people in 2 formats
-      this.people = new FileProcessor(this.format).processFiles();
-      // validate the people
-      new ConvertValidation(this.people).validation();
+      // making people of origin arg with creating new instance of DriverStorage
+      const originPeople: Person[] = new DriverStorage(
+        process.argv[2]
+      ).driver.read();
+      // validate to check if there are any similarity between peoples or not
+      new ImportValidation(
+        originPeople,
+        this.storageDriver.driver.read()
+      ).validation();
+      //making the people array
+      this.people = [...this.storageDriver.driver.read(), ...originPeople];
     }
   }
 
@@ -59,6 +70,8 @@ export class App {
       let tempPerson = new Person(tempFullName, tempPhoneNumebr, this.format);
       // start to add the contact to the phonebook inside of a try catch block to catch and handle errors
       try {
+        //validating input with people
+        new ValidatePerson(this.people, tempPerson).validation();
         // Adding tempPerson to this.phoneBook using the add method
         this.phoneBook.add(tempPerson);
         console.log("the contact has been successfully added to phone book");
@@ -72,7 +85,7 @@ export class App {
     } else {
       //trying to convert people of first format combined with people people of second format to the destination with the help of calling convert method on storageDriver inside of try catch to handle and catch errors
       try {
-        this.storageDriver.convert([...this.people[0], ...this.people[1]]);
+        this.storageDriver.driver.import(this.people);
         console.log("the convertion has been successfuly completed");
       } catch (error) {
         new ErrorLogger(error as Error);
