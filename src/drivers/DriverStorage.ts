@@ -14,28 +14,24 @@ export interface DriverInterface {
   import(argPeople: Person[]): void;
 }
 
+export type ValidTypes = "json" | "csv" | "xml" | "xlsx";
+
 // Define the DriverStorage class
 export default class DriverStorage {
-  private format: string | string[];
+  private format: ValidTypes;
   public driver: DriverInterface;
 
   // Constructor for the DriverStorage class
-  constructor(argFormat: string) {
+  constructor(argFormat: ValidTypes) {
     this.format = argFormat;
 
-    switch (this.format) {
-      case "json":
-        this.driver = new JsonDriver();
-        break;
-      case "csv":
-        this.driver = new CsvDriver();
-        break;
-      case "xml":
-        this.driver = new XmlDriver();
-        break;
-      default:
-        this.driver = new XlsxDriver();
-        break;
-    }
+    const drivers: Record<ValidTypes, new () => DriverInterface> = {
+      json: JsonDriver,
+      csv: CsvDriver,
+      xml: XmlDriver,
+      xlsx: XlsxDriver,
+    };
+
+    this.driver = new drivers[this.format]();
   }
 }

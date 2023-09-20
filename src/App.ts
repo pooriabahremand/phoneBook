@@ -8,13 +8,14 @@ import ErrorLogger from "./classes/ErrorLogger";
 import DriverStorage from "./drivers/DriverStorage";
 import CommandLineParser from "./classes/CommandLineParser";
 import ImportValidation from "./classes/validation/importValidation";
-import FileProcessor from "./classes/readFiles/fileProcessors";
+import { ValidTypes } from "./drivers/DriverStorage";
 
 // Exporting the App class
 export class App {
   // Declaring private properties readLine, phoneBook, format, storageDriver, duty and people
   private readLine!: readline.Interface;
   private storageDriver!: DriverStorage;
+  private storageDriver2!: DriverStorage;
   private phoneBook!: PhoneBook;
   private format: string | string[];
   private duty: string;
@@ -31,7 +32,7 @@ export class App {
       // Assigning the value of process.argv[2] to this.format
       this.format = process.argv[2];
       // making a new instance of DriverStorage class
-      this.storageDriver = new DriverStorage(this.format);
+      this.storageDriver = new DriverStorage(this.format as ValidTypes);
       // Creating a new instance of PhoneBook with this.format as argument and assigning it to this.phoneBook
       this.phoneBook = new PhoneBook(this.format, this.storageDriver);
       // Creating a new readline interface and assigning it to this.readLine
@@ -43,18 +44,11 @@ export class App {
       // Assigning the value of process.argv[3] to this.format
       this.format = process.argv[3];
       // making a new instance of DriverStorage class with origin arg
-      this.storageDriver = new DriverStorage(this.format);
+      this.storageDriver = new DriverStorage(this.format as ValidTypes);
       // making people of origin arg with creating new instance of DriverStorage
-      const originPeople: Person[] = new DriverStorage(
-        process.argv[2]
-      ).driver.read();
-      // validate to check if there are any similarity between peoples or not
-      new ImportValidation(
-        originPeople,
-        this.storageDriver.driver.read()
-      ).validation();
+      this.storageDriver2 = new DriverStorage(process.argv[2] as ValidTypes);
       //making the people array
-      this.people = [...this.storageDriver.driver.read(), ...originPeople];
+      this.people = [];
     }
   }
 
@@ -85,7 +79,15 @@ export class App {
     } else {
       //trying to convert people of first format combined with people people of second format to the destination with the help of calling convert method on storageDriver inside of try catch to handle and catch errors
       try {
-        this.storageDriver.driver.import(this.people);
+        // validate to check if there are any similarity between peoples or not
+        new ImportValidation(
+          this.storageDriver2.driver.read(),
+          this.storageDriver.driver.read()
+        ).validation();
+        this.storageDriver.driver.import([
+          ...this.storageDriver2.driver.read(),
+          ...this.storageDriver.driver.read(),
+        ]);
         console.log("the convertion has been successfuly completed");
       } catch (error) {
         new ErrorLogger(error as Error);
