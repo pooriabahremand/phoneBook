@@ -8,7 +8,7 @@ export default class CommandLineParser {
       return "builder";
     } else {
       // If there are more or less than three command line arguments, return "converter"
-      return "converter";
+      return "importer";
     }
   }
 }

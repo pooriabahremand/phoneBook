@@ -3,7 +3,8 @@ import { DriverInterface } from "./DriverStorage";
 export default class XlsxDriver implements DriverInterface {
     people: Person[];
     filePath: string;
-    constructor(argPeople: Person[]);
+    constructor();
+    read(): Person[];
     add(argPerson: Person): void;
-    convert(argPeople: Person[]): void;
+    import(argPeople: Person[]): void;
 }
