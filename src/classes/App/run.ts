@@ -1,3 +1,10 @@
+/*
+ * The `Run` class is responsible for executing the main logic of the application. It:
+ * - Initializes with an argument of type `BuilderCtor` or `ImporterCtor`.
+ * - Executes the main logic of the application in its `run` method. If `ctorConfig` is an instance of `BuilderCtor`, it gets user input, creates a new instance of `Person`, validates the person, and adds them to the phone book. If `ctorConfig` is not an instance of `BuilderCtor`, it validates and imports data from one storage format to another.
+ * - Uses the private method `getInput` to get user input when the application's duty is "builder".
+ */
+
 // importing required modules
 import ErrorLogger from "../ErrorLogger";
 import Person from "../Person";
