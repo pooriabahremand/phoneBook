@@ -3,7 +3,7 @@ import { writeFileSync, readFileSync } from 'fs'
 import path from 'path'
 import type Person from './../classes/Person'
 import papa from 'papaparse'
-import { type DriverInterface } from './DriverStorage'
+import { type DriverInterface } from './storageDriver'
 
 // Define an interface for the result of parsing CSV data
 interface PapaType {

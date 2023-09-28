@@ -3,7 +3,7 @@ import { writeFileSync, readFileSync } from 'fs'
 import path from 'path'
 import type Person from './../classes/Person'
 import { XMLBuilder, XMLParser, type X2jOptions } from 'fast-xml-parser'
-import { type DriverInterface } from './DriverStorage'
+import { type DriverInterface } from './storageDriver'
 
 // Define the XmlDriver class that implements the DriverInterface
 export default class XmlDriver implements DriverInterface {

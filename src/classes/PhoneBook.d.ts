@@ -1,4 +1,4 @@
-import DriverStorage from "../drivers/DriverStorage";
+import DriverStorage from "../drivers/storageDriver";
 import Person from "./Person";
 export declare class PhoneBook {
     private storageDriver;

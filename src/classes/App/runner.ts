@@ -8,10 +8,10 @@
 // importing required modules
 import ErrorLogger from '../ErrorLogger'
 import Person from '../Person'
-import BuilderCtor from '../builderCtor'
-import type ImporterCtor from '../importerCtor'
-import ImportValidation from '../validation/importValidation'
-import ValidatePerson from '../validation/validatePerson'
+import BuilderCtor from '../ctorBuilder'
+import type ImporterCtor from '../ctorImporter'
+import ImportValidation from '../validation/importValidatior'
+import ValidatePerson from '../validation/personValidator'
 
 // creating and exporting Run class
 export default class Run {

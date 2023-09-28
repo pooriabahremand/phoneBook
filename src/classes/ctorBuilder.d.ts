@@ -1,9 +1,13 @@
-import DriverStorage from "../drivers/DriverStorage";
+/// <reference types="node" />
+import * as readline from "readline";
+import { PhoneBook } from "./PhoneBook";
+import DriverStorage from "../drivers/storageDriver";
 import Person from "./Person";
 import DirectoryFileValidator from "./validation/directoryFileValidator";
-export default class ImporterCtor {
+export default class BuilderCtor {
+    readLine: readline.Interface;
     storageDriver: DriverStorage;
-    storageDriver2: DriverStorage;
+    phoneBook: PhoneBook;
     format: string;
     people: Person[];
     directoryCheck: DirectoryFileValidator;

@@ -1,5 +1,5 @@
 // Import necessary modules from Node.js and other files
-import type DriverStorage from '../drivers/DriverStorage'
+import type DriverStorage from '../drivers/storageDriver'
 import type Person from './Person'
 
 // Define the PhoneBook class

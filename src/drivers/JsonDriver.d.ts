@@ -1,5 +1,5 @@
 import Person from "./../classes/Person";
-import { DriverInterface } from "./DriverStorage";
+import { DriverInterface } from "./storageDriver";
 export default class JsonDriver implements DriverInterface {
     people: Person[];
     filePath: string;

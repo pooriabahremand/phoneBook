@@ -2,7 +2,7 @@
 import { writeFileSync, readFileSync } from 'fs'
 import path from 'path'
 import type Person from './../classes/Person'
-import { type DriverInterface } from './DriverStorage'
+import { type DriverInterface } from './storageDriver'
 
 // Define the JsonDriver class that implements the DriverInterface
 export default class JsonDriver implements DriverInterface {

@@ -4,7 +4,7 @@ import type Person from './../classes/Person'
 import path from 'path'
 import XLSX from 'xlsx'
 import reader from 'xlsx'
-import { type DriverInterface } from './DriverStorage'
+import { type DriverInterface } from './storageDriver'
 
 // Define the XlsxDriver class that implements the DriverInterface
 export default class XlsxDriver implements DriverInterface {

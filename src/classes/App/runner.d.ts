@@ -1,5 +1,5 @@
-import BuilderCtor from "../builderCtor";
-import ImporterCtor from "../importerCtor";
+import BuilderCtor from "../ctorBuilder";
+import ImporterCtor from "../ctorImporter";
 export default class Run {
     private ctorConfig;
     constructor(argCtorConfig: BuilderCtor | ImporterCtor);

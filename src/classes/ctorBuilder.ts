@@ -1,6 +1,6 @@
 import * as readline from 'readline'
 import { PhoneBook } from './PhoneBook'
-import DriverStorage, { type ValidTypes } from '../drivers/DriverStorage'
+import DriverStorage, { type ValidTypes } from '../drivers/storageDriver'
 import type Person from './Person'
 import type DirectoryFileValidator from './validation/directoryFileValidator'
 

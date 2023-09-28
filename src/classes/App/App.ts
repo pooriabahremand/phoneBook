@@ -7,12 +7,12 @@
  */
 
 // Importing required modules
-import ValidateArgument from '../validation/ValidataArgument'
+import ValidateArgument from '../validation/argumentValidator'
 import CommandLineParser from '../CommandLineParser'
 import DirectoryFileValidator from '../validation/directoryFileValidator'
-import BuilderCtor from '../builderCtor'
-import ImporterCtor from '../importerCtor'
-import Run from './run'
+import BuilderCtor from '../ctorBuilder'
+import ImporterCtor from '../ctorImporter'
+import Run from './runner'
 
 export class App {
   // Declaring private properties duty, directoryCheck, ctorConfig, runApp
