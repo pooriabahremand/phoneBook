@@ -4,6 +4,7 @@ import CsvDriver from './CsvDriver'
 import XmlDriver from './XmlDriver'
 import XlsxDriver from './XlsxDriver'
 import type Person from '../classes/Person'
+import SqliteDriver from './SqliteDriver'
 
 // Define the DriverInterface
 export interface DriverInterface {
@@ -14,7 +15,7 @@ export interface DriverInterface {
   import: (argPeople: Person[]) => void
 }
 
-export type ValidTypes = 'json' | 'csv' | 'xml' | 'xlsx'
+export type ValidTypes = 'json' | 'csv' | 'xml' | 'xlsx' | 'sqlite'
 
 // Define the DriverStorage class
 export default class DriverStorage {
@@ -29,7 +30,8 @@ export default class DriverStorage {
       json: JsonDriver,
       csv: CsvDriver,
       xml: XmlDriver,
-      xlsx: XlsxDriver
+      xlsx: XlsxDriver,
+      sqlite: SqliteDriver
     }
 
     this.driver = new drivers[this.format]()

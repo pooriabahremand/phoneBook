@@ -16,8 +16,10 @@ export default class DirectoryFileValidator {
     // creatign const filePath to create the filePath of the needed storage with the help of path module
     const filePath = path.join('storage', `phoneBook.${argFormat}`)
     // if it does not exist , create a new one
-    if (!existsSync(filePath)) {
-      writeFileSync(filePath, '')
+    if (argFormat !== 'sqlite') {
+      if (!existsSync(filePath)) {
+        writeFileSync(filePath, '')
+      }
     }
   }
 }
