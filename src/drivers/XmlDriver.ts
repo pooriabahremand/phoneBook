@@ -8,16 +8,25 @@ import { type DriverInterface } from './storageDriver'
 // Define the XmlDriver class that implements the DriverInterface
 export default class XmlDriver implements DriverInterface {
   // Declare properties for storing people data and file path
-  public people: Person[]
+  public people: Person[] = []
   public filePath: string
+  private isChange: boolean = false
+  private content: string = ''
 
   // Constructor for the XmlDriver class
   constructor () {
     // Set the file path for the XML file
     this.filePath = path.join('storage', 'phoneBook.xml')
 
-    // Initialize the people property with the provided data
-    this.people = []
+    // make a setinterval for adding contacts to the storage each 8 seconds
+    setInterval(() => {
+      if (this.isChange) {
+        // Write the updated XML data to the file
+        writeFileSync(this.filePath, this.content)
+        // changing the value of ischange to the false
+        this.isChange = false
+      }
+    }, 8000)
   }
 
   // Method to add a new person to the people data and update the XML file
@@ -29,10 +38,10 @@ export default class XmlDriver implements DriverInterface {
     const builder = new XMLBuilder({ oneListGroup: true })
 
     // Convert the updated people data to an XML string
-    const result = builder.build(this.people)
+    this.content = builder.build(this.people)
 
-    // Write the updated XML data to the file
-    writeFileSync(this.filePath, result)
+    // changing the value of ischange to true
+    this.isChange = true
   }
 
   // Method to read people data from a XML file and return it as an array of Person objects

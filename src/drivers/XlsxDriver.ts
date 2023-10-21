@@ -9,16 +9,25 @@ import { type DriverInterface } from './storageDriver'
 // Define the XlsxDriver class that implements the DriverInterface
 export default class XlsxDriver implements DriverInterface {
   // Declare properties for storing people data and file path
-  public people: Person[]
+  public people: Person[] = []
   public filePath: string
+  private content: XLSX.WorkBook = XLSX.utils.book_new()
+  private isChange: boolean = false
 
   // Constructor for the XlsxDriver class
   constructor () {
     // Set the file path for the XLSX file
     this.filePath = path.join('storage', 'phoneBook.xlsx')
 
-    // Initialize the people property with the provided data
-    this.people = []
+    // make a setinterval for adding contacts to the storage each 8 seconds
+    setInterval(() => {
+      if (this.isChange) {
+        // Write the updated workbook to the file
+        XLSX.writeFile(this.content, this.filePath)
+        // changing the value of ischange to the false
+        this.isChange = false
+      }
+    }, 8000)
   }
 
   // Method to read people data from an XLSX file and return it as an array of Person objects
@@ -64,8 +73,11 @@ export default class XlsxDriver implements DriverInterface {
     // Add the worksheet to the workbook
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
 
-    // Write the updated workbook to the file
-    XLSX.writeFile(workbook, this.filePath)
+    // assigning the value of workbook to the this.content variable
+    this.content = workbook
+
+    // changing the value of ischange to true
+    this.isChange = true
   }
 
   // Method to convert an array of Person objects to XLSX format and write it to the file

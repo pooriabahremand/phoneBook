@@ -36,8 +36,7 @@ export default class SqliteDriver implements DriverInterface {
   // Method to read all records from the phoneBook table
   public read (): Person[] {
     // Prepare and execute the SQL query
-    const sql = 'SELECT * FROM phoneBook'
-    const rows = this.db.prepare(sql).all()
+    const rows = this.db.prepare('SELECT * FROM phoneBook').all()
     // Return the result of the query
     return rows
   }

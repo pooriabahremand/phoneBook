@@ -6,9 +6,10 @@ import { type DriverInterface } from './storageDriver'
 
 // Define the JsonDriver class that implements the DriverInterface
 export default class JsonDriver implements DriverInterface {
-  // Declare properties for storing people data and file path
+  // Declare properties for storing people data , file path and isChange variable
   public people: Person[]
   public filePath: string
+  private isChange: boolean
 
   // Constructor for the JsonDriver class
   constructor () {
@@ -17,6 +18,19 @@ export default class JsonDriver implements DriverInterface {
 
     // Initialize the people property with the provided data
     this.people = []
+
+    // initialize the value of ischange to false
+    this.isChange = false
+
+    // make a setinterval for adding contacts to the storage each 8 seconds
+    setInterval(() => {
+      if (this.isChange) {
+        // Convert the updated people data to JSON format and write it to the file
+        writeFileSync(this.filePath, JSON.stringify(this.people))
+        // changing the value of ischange to the false
+        this.isChange = false
+      }
+    }, 8000)
   }
 
   // Method to read people data from a JSON file and return it as an array of Person objects
@@ -39,8 +53,8 @@ export default class JsonDriver implements DriverInterface {
     // Add the new person to the people data
     this.people.push(argPerson)
 
-    // Convert the updated people data to JSON format and write it to the file
-    writeFileSync(this.filePath, JSON.stringify(this.people))
+    // change the value of ischange to true
+    this.isChange = true
   }
 
   // Method to convert an array of Person objects to JSON format and write it to the file

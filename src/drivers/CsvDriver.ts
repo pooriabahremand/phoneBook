@@ -13,16 +13,25 @@ interface PapaType {
 // Define the CsvDriver class that implements the DriverInterface
 export default class CsvDriver implements DriverInterface {
   // Declare properties for storing people data and file path
-  public people: Person[]
+  public people: Person[] = []
   public filePath: string
+  private isChange: boolean = false
+  private content: string = ''
 
   // Constructor for the CsvDriver class
   constructor () {
     // Set the file path for the CSV file
     this.filePath = path.join('storage', 'phoneBook.csv')
 
-    // Initialize the people property with the provided data
-    this.people = []
+    // make a setinterval for adding contacts to the storage each 8 seconds
+    setInterval(() => {
+      if (this.isChange) {
+        // Write the updated CSV data to the file
+        writeFileSync(this.filePath, this.content)
+        // changing the value of ischange to the false
+        this.isChange = false
+      }
+    }, 8000)
   }
 
   // Method to read people data from a CSV file and return it as an array of Person objects
@@ -50,10 +59,10 @@ export default class CsvDriver implements DriverInterface {
     this.people.push(argPerson)
 
     // Convert the updated people data to CSV format
-    const content = papa.unparse(this.people)
+    this.content = papa.unparse(this.people)
 
-    // Write the updated CSV data to the file
-    writeFileSync(this.filePath, content)
+    // changing the value of ischange to true
+    this.isChange = true
   }
 
   // Method to convert an array of Person objects to CSV format and write it to the file
