@@ -5,6 +5,7 @@ import XmlDriver from './XmlDriver'
 import XlsxDriver from './XlsxDriver'
 import type Person from '../classes/Person'
 import SqliteDriver from './SqliteDriver'
+import MongoDriver from './MongoDriver'
 
 // Define the DriverInterface
 export interface DriverInterface {
@@ -15,7 +16,7 @@ export interface DriverInterface {
   import: (argPeople: Person[]) => void
 }
 
-export type ValidTypes = 'json' | 'csv' | 'xml' | 'xlsx' | 'sqlite'
+export type ValidTypes = 'json' | 'csv' | 'xml' | 'xlsx' | 'sqlite' | 'mongodb'
 
 // Define the DriverStorage class
 export default class DriverStorage {
@@ -31,7 +32,8 @@ export default class DriverStorage {
       csv: CsvDriver,
       xml: XmlDriver,
       xlsx: XlsxDriver,
-      sqlite: SqliteDriver
+      sqlite: SqliteDriver,
+      mongodb: MongoDriver
     }
 
     this.driver = new drivers[this.format]()

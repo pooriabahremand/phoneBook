@@ -1,3 +1,3 @@
-const formats: string[] = ['json', 'csv', 'xml', 'xlsx', 'sqlite']
+const formats: string[] = ['json', 'csv', 'xml', 'xlsx', 'sqlite', 'mongodb']
 
 export default formats

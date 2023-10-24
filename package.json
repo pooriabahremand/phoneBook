@@ -29,8 +29,11 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@types/mongodb": "^4.0.7",
     "better-sqlite3": "^9.0.0",
     "fast-xml-parser": "^4.2.7",
+    "mongodb": "^6.2.0",
+    "mongodb-memory-server": "^9.0.1",
     "papaparse": "^5.4.1",
     "xlsx": "^0.18.5"
   }
