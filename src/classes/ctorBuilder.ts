@@ -10,7 +10,6 @@ export default class BuilderCtor {
   public storageDriver: DriverStorage
   public phoneBook: PhoneBook
   public format: string
-  public people: Person[]
   public directoryCheck: DirectoryFileValidator
   constructor (argDirectoryCheck: DirectoryFileValidator) {
     // Assigning the value of process.argv[2] to this.format
@@ -26,6 +25,10 @@ export default class BuilderCtor {
     // checking for the existence of filePath
     this.directoryCheck.validator(this.format)
     // making an array of people full of person objects
-    this.people = this.storageDriver.driver.read()
+    
+  }
+
+  public readPeople(): Promise<Person[]>{
+    return this.storageDriver.driver.read().then((content)=>{return content})
   }
 }
