@@ -13,7 +13,10 @@ export class PhoneBook {
   }
 
   // Method to add a new person to the phone book
-  public add (argPerson: Person): void {
-    this.storageDriver.driver.add(argPerson)
+  public add (argPerson: Person): Promise<void> {
+    return new Promise((resolve)=>{
+
+      resolve(this.storageDriver.driver.add(argPerson))
+    })
   }
 }

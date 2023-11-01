@@ -80,7 +80,7 @@ export default class SqliteDriver implements DriverInterface {
         // Rollback the transaction in case of errors
         this.db.exec("ROLLBACK");
       }
-      resolve;
+      resolve();
     });
   }
 
@@ -111,7 +111,7 @@ export default class SqliteDriver implements DriverInterface {
         // Rollback the transaction in case of errors
         this.db.exec("ROLLBACK");
       }
-      resolve;
+      resolve();
     });
   }
 }

@@ -6,6 +6,7 @@
  */
 
 // importing required modules
+import { AsyncDriverInterface, Driver } from "../../drivers/storageDriver";
 import ErrorLogger from "../ErrorLogger";
 import Person from "../Person";
 import BuilderCtor from "../ctorBuilder";
@@ -18,14 +19,22 @@ export default class Run {
   // difining the private ctorConfig that can be of type BuilderCtor or ImporterCtor
   private readonly ctorConfig: BuilderCtor | ImporterCtor;
   private readonly errorLog: ErrorLogger;
+
   // constuctor for the Run class
   constructor(argCtorConfig: BuilderCtor | ImporterCtor) {
     this.ctorConfig = argCtorConfig;
     this.errorLog = new ErrorLogger();
   }
 
+  private isAsyncDriverInterface(
+    driver: Driver
+  ): driver is AsyncDriverInterface {
+    return "connect" in driver;
+  }
+
   public async run(): Promise<void> {
     // checking that if ctorConfig is an instance of BuilderCtor or not , if yes ...
+    let returnedPromise;
     if (this.ctorConfig instanceof BuilderCtor) {
       const builderCtor = this.ctorConfig;
       // Getting user input for full name and phone number using the getInput method and assigning them to tempFullName and tempPhoneNumebr respectively
@@ -40,14 +49,20 @@ export default class Run {
       );
 
       // validating input with people
-       builderCtor
-        .readPeople()
+      if (this.isAsyncDriverInterface(builderCtor.storageDriver.driver)) {
+        returnedPromise = builderCtor.storageDriver.driver.connect();
+      } else {
+        returnedPromise = new Promise<void>((resolve) => {
+          resolve();
+        });
+      }
+      await returnedPromise
+        .then(() => {
+          return builderCtor.readPeople();
+        })
         .then((content) => {
           new ValidatePerson(content, tempPerson).validation();
-        })
-        .then(() => {
-          // Adding tempPerson to this.phoneBook using the add method
-          builderCtor.phoneBook.add(tempPerson);
+          return builderCtor.phoneBook.add(tempPerson);
         })
         .then(() => {
           console.log("the contact has been successfully added to phone book");
@@ -61,21 +76,30 @@ export default class Run {
     } else {
       const importerCtor = this.ctorConfig;
       // validate to check if there are any similarity between peoples or not
-       importerCtor
-        .readPeople()
+      if (this.isAsyncDriverInterface(importerCtor.storageDriver.driver)) {
+        returnedPromise = importerCtor.storageDriver.driver.connect();
+      } else {
+        returnedPromise = new Promise<void>((resolve) => {
+          resolve();
+        });
+      }
+      await returnedPromise
+        .then(() => {
+          return importerCtor.readPeople();
+        })
         .then(([firstPeople, secondPeople]) => {
           new ImportValidation(firstPeople, secondPeople).validation();
           return [firstPeople, secondPeople];
         })
         .then(([firstPeople, secondPeople]) => {
           // import persons of the origin format to the destination format
-          importerCtor.storageDriver.driver.import([
+          return importerCtor.storageDriver.driver.import([
             ...firstPeople,
             ...secondPeople,
           ]);
         })
         .then(() => {
-          console.log("the convertion has been successfuly completed");
+          console.log("the conversion has been successfully completed");
         })
         .catch((error) => {
           this.errorLog.ErrorHandler(error as Error);

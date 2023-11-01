@@ -27,8 +27,8 @@ export default class ImporterCtor {
   }
 
   public readPeople(): Promise<Person[][]> {
-    const firstPeoplePromise = this.storageDriver.driver.read();
-    const secondPeoplePromise = this.storageDriver2.driver.read();
+    const firstPeoplePromise = this.storageDriver.driver.read(); // destination
+    const secondPeoplePromise = this.storageDriver2.driver.read(); // origin
 
     return Promise.all([firstPeoplePromise, secondPeoplePromise]);
   }

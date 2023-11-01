@@ -65,7 +65,7 @@ export default class CsvDriver implements DriverInterface {
 
       // changing the value of ischange to true
       this.isChange = true;
-      resolve;
+      resolve();
     });
   }
 
@@ -77,7 +77,7 @@ export default class CsvDriver implements DriverInterface {
 
       // Write the converted CSV data to the file
       fs.writeFile(this.filePath, content);
-      resolve;
+      resolve();
     });
   }
 }

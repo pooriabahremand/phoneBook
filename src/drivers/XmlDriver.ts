@@ -44,7 +44,7 @@ export default class XmlDriver implements DriverInterface {
 
       // changing the value of ischange to true
       this.isChange = true;
-      resolve;
+      resolve();
     });
   }
 
@@ -90,7 +90,7 @@ export default class XmlDriver implements DriverInterface {
 
       // Write the converted XML data to the file
       fs.writeFile(this.filePath, result);
-      resolve;
+      resolve();
     });
   }
 }

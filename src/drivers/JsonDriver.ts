@@ -56,7 +56,7 @@ export default class JsonDriver implements DriverInterface {
       this.people.push(argPerson);
       // change the value of ischange to true
       this.isChange = true;
-      resolve;
+      resolve();
     });
   }
 
@@ -65,7 +65,7 @@ export default class JsonDriver implements DriverInterface {
     return new Promise((resolve) => {
       // Convert the provided people data to JSON format and write it to the file
       fs.writeFile(this.filePath, JSON.stringify(argPeople));
-      resolve;
+      resolve();
     });
   }
 }
